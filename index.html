@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>表格数据展示</title>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <script src="js/vue.js"></script>
+    <script src="js/vue-resource.js"></script>
+</head>
+<body>
+<div id="app" class="text-center">
+    <my-form :data-Info="limitInfo" :head-Data="listInfo[0]" :current-Page="currentPage"
+             :limit-Num="limitNum">
+    </my-form>
+    <my-page :total-Page="totalPage" :current-Page.sync="currentPage" v-on:num-click="listen">
+    </my-page>
+</div>
+<template id="form-component">
+    <table class="table ">
+        <tr>
+            <td>序号</td>
+            <td v-for="head in headData">{{head}}</td>
+        </tr>
+        <tr v-for="data in dataInfo">
+            <td>{{$index+1+(currentPage-1)*limitNum}}</td>
+            <td id="row" v-for="dataList in data">{{dataList}}</td>
+        </tr>
+    </table>
+</template>
+<template id="page-component">
+    <nav aria-label="Page navigation">
+        <ul class=" pagination" style="margin: 0">
+            <li><span aria-hidden="true" v-on:click="upPage(currentPage)">&laquo;</span></li>
+            <li v-for="pageNum in indexs" v-bind:class="{active:pageNum==currentPage}">
+                <a v-on:click="numClick(pageNum)">{{pageNum<1? "...":pageNum}}</a>
+            </li>
+            <li><span aria-hidden="true" v-on:click="downPage(currentPage)">&raquo;</span></li>
+            <li>共{{totalPage}}页</li>
+            <li><input class="num-input text-center" style="" type="text" value="1"/>
+                <button class="btn" v-on:click="jump()">跳转</button>
+            </li>
+        </ul>
+    </nav>
+</template>
+<script src="js/Message.js"></script>
+<script src="js/table.js"></script>
+<script src="js/page.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
